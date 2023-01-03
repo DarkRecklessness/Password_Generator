@@ -1,8 +1,9 @@
-def passcheck(password, usebigsymbol, usenumbers, usespecsymbols):
-    flag1 = False
-    flag2 = True
-    flag3 = True
-    flag4 = True
+import random
+
+def passcheck(password):
+    flag1, flag2, flag3, flag4 = True, True, True, True
+    if usedefaultsym == "y":
+        flag1 = False
     if usebigsymbol == "y":
         flag2 = False
     if usenumbers == "y":
@@ -23,18 +24,16 @@ def passcheck(password, usebigsymbol, usenumbers, usespecsymbols):
             flag4 = True
     if flag1 == True and flag2 == True and flag3 == True and flag4 == True:
         return False
-    else:
-        return True
+    return True
 
-import random
-
-line_count = sum(1 for line in open('passwords.txt'))
-
-symbol = "abcdefghijklmnopqrstuvwxyz"
+symbol = ""
 lenp = int(input("Password length: "))
+usedefaultsym = input("Use default symbol? y / n: ")
 usebigsymbol = input("Use big symbol? y / n: ")
 usenumbers = input("Use numbers? y / n: ")
 usespecsymbols = input("Use specsymbols? y / n: ")
+if usedefaultsym == "y":
+    symbol += "abcdefghijklmnopqrstuvwxyz"
 if usebigsymbol == "y":
     symbol += "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
 if usenumbers == "y":
@@ -45,17 +44,14 @@ platform = input("Platform: ")
 login = input("Login: ")
 
 file = open("passwords.txt", "a")
-
+line_count = sum(1 for line in open('passwords.txt'))
 password = ""
-while passcheck(password, usebigsymbol, usenumbers, usespecsymbols):
+while passcheck(password):
     password = ""
     for j in range(lenp):
         password += random.choice(symbol)
 print(password)
 if line_count != 0:
-    file.write("\n")
-    file.write("\n")
-file.write("Platform: " + platform + "\n")
-file.write("Login: " + login + "\n")
-file.write("Password: " + password)
+    file.write(2 * "\n")
+file.write("Platform: " + platform + "\n" + "Login: " + login + "\n" + "Password: " + password)
 file.close()
